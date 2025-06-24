@@ -1,310 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Configuration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #FFFFFF;
-            color: #000000;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 95%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #FCD307;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            text-align: center;
-            color: #000000;
-        }
-        .config-area, .history-area {
-            background-color: #FFFFFF;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .button {
-            background-color: #FCD307;
-            color: #000000;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .button:hover {
-            background-color: #FFBC00;
-        }
-        .button.delete {
-            background-color: #FF6B6B;
-            color: #FFFFFF;
-        }
-        .button.edit {
-            background-color: #4CAF50;
-            color: #FFFFFF;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #000000;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .question-config {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            position: relative;
-            transition: all 0.3s;
-        }
-        .question-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .emoji-preview {
-            font-size: 24px;
-            margin: 5px 0;
-            min-height: 30px;
-        }
-        .sentence-preview {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            min-height: 20px;
-        }
-        #configFeedback {
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
-            color: #4CAF50;
-            height: 20px;
-        }
-        .history-item {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        @media (max-width: 480px) {
-            .button {
-                padding: 12px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuración del Juego</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #FFFFFF;
+color: #000000;
+margin: 0;
+padding: 0;
+}
+.container {
+width: 95%;
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
+background-color: #FCD307;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.header {
+text-align: center;
+color: #000000;
+}
+.config-area, .history-area {
+background-color: #FFFFFF;
+padding: 20px;
+border-radius: 10px;
+margin-top: 20px;
+}
+.button {
+background-color: #FCD307;
+color: #000000;
+border: none;
+padding: 10px 20px;
+margin: 5px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s;
+width: 100%;
+box-sizing: border-box;
+}
+.button:hover {
+background-color: #FFBC00;
+}
+.button.delete {
+background-color: #FF6B6B;
+color: #FFFFFF;
+}
+.button.edit {
+background-color: #4CAF50;
+color: #FFFFFF;
+}
+input, select, textarea {
+width: 100%;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #000000;
+border-radius: 5px;
+box-sizing: border-box;
+}
+.question-config {
+border: 1px solid #ddd;
+padding: 15px;
+margin-bottom: 15px;
+border-radius: 5px;
+background-color: #f9f9f9;
+position: relative;
+transition: all 0.3s;
+}
+.question-actions {
+display: flex;
+justify-content: space-between;
+margin-top: 10px;
+}
+.emoji-preview {
+font-size: 24px;
+margin: 5px 0;
+min-height: 30px;
+}
+.sentence-preview {
+margin: 10px 0;
+padding: 10px;
+background-color: #f0f0f0;
+border-radius: 5px;
+min-height: 20px;
+}
+#configFeedback {
+text-align: center;
+margin-top: 20px;
+font-weight: bold;
+color: #4CAF50;
+height: 20px;
+}
+.history-item {
+border: 1px solid #ddd;
+padding: 10px;
+margin-bottom: 10px;
+border-radius: 5px;
+background-color: #f9f9f9;
+}
+@media (max-width: 480px) {
+.button {
+padding: 12px;
+}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Game Configuration</h1>
-        </div>
-        <div class="config-area">
-            <h2>Question Configuration</h2>
-            <div id="questionsContainer">
-                <!-- Questions will be added here -->
-            </div>
-            <button class="button" onclick="addQuestion()">Add Another Question</button>
-            <button class="button" onclick="clearAllQuestions()">Clear All Questions</button>
-            <button class="button" onclick="saveConfig()">Save Configuration</button>
-            <button class="button" onclick="window.location.href='game.html'">Go to Game</button>
-            <p id="configFeedback"></p>
-        </div>
-        <div class="history-area">
-            <h2>Question History</h2>
-            <div id="historyContainer">
-                <!-- Question history will be displayed here -->
-            </div>
-            <button class="button" onclick="loadHistory()">Load History</button>
-        </div>
-    </div>
-    <script>
-        let questions = [];
-        let editingIndex = null;
-        let history = JSON.parse(localStorage.getItem('history')) || [];
-
-        function addQuestion(question = { sentence: '', emoji: '', explanation: '', correctAnswers: [], image: '' }, isNew = true) {
-            const container = document.getElementById('questionsContainer');
-            const questionId = isNew ? questions.length : editingIndex;
-
-            if (isNew) {
-                questions.push(question);
-            } else {
-                questions[editingIndex] = question;
-                editingIndex = null;
-            }
-
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'question-config';
-            questionDiv.id = `question-${questionId}`;
-            questionDiv.innerHTML = `
-                <h3>Question ${questionId + 1}</h3>
-                <div class="emoji-preview" id="emojiPreview_${questionId}">${question.emoji}</div>
-                <div class="sentence-preview" id="sentencePreview_${questionId}">${question.sentence}</div>
-                <div class="image-preview" id="imagePreview_${questionId}">
-                    ${question.image ? `<img src="${question.image}" style="max-width: 100%; height: auto;">` : ''}
-                </div>
-                <label for="sentence_${questionId}">Sentence:</label>
-                <input type="text" id="sentence_${questionId}" value="${question.sentence}" placeholder="Enter the sentence" oninput="updatePreview(${questionId}, 'sentence')">
-                <label for="emoji_${questionId}">Emoji:</label>
-                <input type="text" id="emoji_${questionId}" value="${question.emoji}" placeholder="Enter the emoji" oninput="updatePreview(${questionId}, 'emoji')">
-                <label for="image_${questionId}">Image:</label>
-                <input type="file" id="image_${questionId}" onchange="updateImagePreview(${questionId})">
-                <label for="explanation_${questionId}">Explanation:</label>
-                <textarea id="explanation_${questionId}" placeholder="Enter the explanation">${question.explanation}</textarea>
-                <label for="correctAnswers_${questionId}">Correct Answers (comma-separated):</label>
-                <input type="text" id="correctAnswers_${questionId}" value="${question.correctAnswers ? question.correctAnswers.join(', ') : ''}" placeholder="Example: answer1, answer2, another answer">
-                <div class="question-actions">
-                    <button class="button edit" onclick="editQuestion(${questionId})">Edit</button>
-                    <button class="button delete" onclick="deleteQuestion(${questionId})">Delete</button>
-                </div>
-            `;
-
-            if (isNew) {
-                container.appendChild(questionDiv);
-            } else {
-                const existingQuestion = document.getElementById(`question-${questionId}`);
-                container.replaceChild(questionDiv, existingQuestion);
-            }
-        }
-
-        function updatePreview(id, type) {
-            const value = document.getElementById(`${type}_${id}`).value;
-            document.getElementById(`${type}Preview_${id}`).innerHTML = type === 'emoji' ? value : value;
-        }
-
-        function updateImagePreview(id) {
-            const fileInput = document.getElementById(`image_${id}`);
-            const previewDiv = document.getElementById(`imagePreview_${id}`);
-            const file = fileInput.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; height: auto;">`;
-                    questions[id].image = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function editQuestion(index) {
-            const question = questions[index];
-            editingIndex = index;
-            const questionDiv = document.getElementById(`question-${index}`);
-            questionDiv.remove();
-            addQuestion(question, false);
-        }
-
-        function deleteQuestion(index) {
-            if (confirm('Are you sure you want to delete this question?')) {
-                questions.splice(index, 1);
-                refreshQuestionsDisplay();
-                showFeedback('Question deleted successfully');
-            }
-        }
-
-        function clearAllQuestions() {
-            if (confirm('Are you sure you want to delete all questions?')) {
-                questions = [];
-                refreshQuestionsDisplay();
-                showFeedback('All questions have been deleted');
-            }
-        }
-
-        function refreshQuestionsDisplay() {
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
-            questions.forEach((question, index) => {
-                addQuestion(question, false);
-            });
-        }
-
-        function showFeedback(message) {
-            const feedback = document.getElementById('configFeedback');
-            feedback.textContent = message;
-            setTimeout(() => {
-                feedback.textContent = '';
-            }, 3000);
-        }
-
-        function saveConfig() {
-            const questionsContainer = document.getElementById('questionsContainer');
-            const questionConfigs = questionsContainer.querySelectorAll('.question-config');
-
-            questions = Array.from(questionConfigs).map((config, index) => {
-                const correctAnswersInput = config.querySelector(`#correctAnswers_${index}`).value;
-                const correctAnswers = correctAnswersInput.split(',').map(a => a.trim()).filter(a => a);
-                return {
-                    sentence: config.querySelector(`#sentence_${index}`).value,
-                    emoji: config.querySelector(`#emoji_${index}`).value,
-                    image: questions[index].image,
-                    explanation: config.querySelector(`#explanation_${index}`).value,
-                    correctAnswers: correctAnswers.length > 0 ? correctAnswers : null
-                };
-            });
-
-            // Save to history
-            history.push(...questions);
-            localStorage.setItem('history', JSON.stringify(history));
-            localStorage.setItem('config', JSON.stringify({ questions }));
-            showFeedback('Configuration saved successfully!');
-            setTimeout(() => {
-                window.location.href = 'game.html';
-            }, 2000);
-        }
-
-        function loadHistory() {
-            const historyContainer = document.getElementById('historyContainer');
-            historyContainer.innerHTML = '';
-            history.forEach((question, index) => {
-                const historyItem = document.createElement('div');
-                historyItem.className = 'history-item';
-                historyItem.innerHTML = `
-                    <h3>Question ${index + 1}</h3>
-                    <p><strong>Sentence:</strong> ${question.sentence}</p>
-                    <p><strong>Emoji:</strong> ${question.emoji}</p>
-                    <p><strong>Explanation:</strong> ${question.explanation}</p>
-                    <p><strong>Correct Answers:</strong> ${question.correctAnswers ? question.correctAnswers.join(', ') : ''}</p>
-                    <div class="image-preview">
-                        ${question.image ? `<img src="${question.image}" style="max-width: 100%; height: auto;">` : ''}
-                    </div>
-                    <button class="button edit" onclick="editFromHistory(${index})">Edit</button>
-                `;
-                historyContainer.appendChild(historyItem);
-            });
-        }
-
-        function editFromHistory(index) {
-            const question = history[index];
-            questions.push(question);
-            refreshQuestionsDisplay();
-            showFeedback('Question loaded for editing');
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedConfig = localStorage.getItem('config');
-            if (savedConfig) {
-                const config = JSON.parse(savedConfig);
-                questions = config.questions || [];
-                refreshQuestionsDisplay();
-            }
-        });
-    </script>
+<div class="container">
+<div class="header">
+<h1>Configuración del Juego</h1>
+</div>
+<div class="config-area">
+<h2>Configuración de Preguntas</h2>
+<div id="questionsContainer">
+<!-- Las preguntas se añadirán aquí -->
+</div>
+<button class="button" onclick="addQuestion()">Añadir Otra Pregunta</button>
+<button class="button" onclick="clearAllQuestions()">Limpiar Todas las Preguntas</button>
+<button class="button" onclick="saveConfig()">Guardar Configuración</button>
+<button class="button" onclick="window.location.href='game.html'">Ir al Juego</button>
+<p id="configFeedback"></p>
+</div>
+<div class="history-area">
+<h2>Historial de Preguntas</h2>
+<div id="historyContainer">
+<!-- El historial de preguntas se mostrará aquí -->
+</div>
+<button class="button" onclick="loadHistory()">Cargar Historial</button>
+</div>
+</div>
+<script>
+let questions = [];
+let editingIndex = null;
+let history = JSON.parse(localStorage.getItem('history')) || [];
+function addQuestion(question = { sentence: '', emoji: '', explanation: '', correctAnswers: [], image: '' }, isNew = true) {
+const container = document.getElementById('questionsContainer');
+const questionId = isNew ? questions.length : editingIndex;
+if (isNew) {
+questions.push(question);
+} else {
+questions[editingIndex] = question;
+editingIndex = null;
+}
+const questionDiv = document.createElement('div');
+questionDiv.className = 'question-config';
+questionDiv.id = `question-${questionId}`;
+questionDiv.innerHTML = `
+<h3>Pregunta ${questionId + 1}</h3>
+<div class="emoji-preview" id="emojiPreview_${questionId}">${question.emoji}</div>
+<div class="sentence-preview" id="sentencePreview_${questionId}">${question.sentence}</div>
+<div class="image-preview" id="imagePreview_${questionId}">
+${question.image ? `<img src="${question.image}" style="max-width: 100%; height: auto;">` : ''}
+</div>
+<label for="sentence_${questionId}">Oración:</label>
+<input type="text" id="sentence_${questionId}" value="${question.sentence}" placeholder="Ingrese la oración" oninput="updatePreview(${questionId}, 'sentence')">
+<label for="emoji_${questionId}">Emoji:</label>
+<input type="text" id="emoji_${questionId}" value="${question.emoji}" placeholder="Ingrese el emoji" oninput="updatePreview(${questionId}, 'emoji')">
+<label for="image_${questionId}">Imagen:</label>
+<input type="file" id="image_${questionId}" onchange="updateImagePreview(${questionId})">
+<label for="explanation_${questionId}">Explicación:</label>
+<textarea id="explanation_${questionId}" placeholder="Ingrese la explicación">${question.explanation}</textarea>
+<label for="correctAnswers_${questionId}">Respuestas correctas (separadas por comas):</label>
+<input type="text" id="correctAnswers_${questionId}" value="${question.correctAnswers ? question.correctAnswers.join(', ') : ''}" placeholder="Ej: respuesta1, respuesta2, otra respuesta">
+<div class="question-actions">
+<button class="button edit" onclick="editQuestion(${questionId})">Editar</button>
+<button class="button delete" onclick="deleteQuestion(${questionId})">Eliminar</button>
+</div>
+`;
+if (isNew) {
+container.appendChild(questionDiv);
+} else {
+const existingQuestion = document.getElementById(`question-${questionId}`);
+container.replaceChild(questionDiv, existingQuestion);
+}
+}
+function updatePreview(id, type) {
+const value = document.getElementById(`${type}_${id}`).value;
+document.getElementById(`${type}Preview_${id}`).innerHTML = type === 'emoji' ? value : value;
+}
+function updateImagePreview(id) {
+const fileInput = document.getElementById(`image_${id}`);
+const previewDiv = document.getElementById(`imagePreview_${id}`);
+const file = fileInput.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(e) {
+previewDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; height: auto;">`;
+questions[id].image = e.target.result;
+}
+reader.readAsDataURL(file);
+}
+}
+function editQuestion(index) {
+const question = questions[index];
+editingIndex = index;
+const questionDiv = document.getElementById(`question-${index}`);
+questionDiv.remove();
+addQuestion(question, false);
+}
+function deleteQuestion(index) {
+if (confirm('¿Estás seguro de que quieres eliminar esta pregunta?')) {
+questions.splice(index, 1);
+refreshQuestionsDisplay();
+showFeedback('Pregunta eliminada correctamente');
+}
+}
+function clearAllQuestions() {
+if (confirm('¿Estás seguro de que quieres eliminar todas las preguntas?')) {
+questions = [];
+refreshQuestionsDisplay();
+showFeedback('Todas las preguntas han sido eliminadas');
+}
+}
+function refreshQuestionsDisplay() {
+const container = document.getElementById('questionsContainer');
+container.innerHTML = '';
+questions.forEach((question, index) => {
+addQuestion(question, false);
+});
+}
+function showFeedback(message) {
+const feedback = document.getElementById('configFeedback');
+feedback.textContent = message;
+setTimeout(() => {
+feedback.textContent = '';
+}, 3000);
+}
+function saveConfig() {
+const questionsContainer = document.getElementById('questionsContainer');
+const questionConfigs = questionsContainer.querySelectorAll('.question-config');
+questions = Array.from(questionConfigs).map((config, index) => {
+const correctAnswersInput = config.querySelector(`#correctAnswers_${index}`).value;
+const correctAnswers = correctAnswersInput.split(',').map(a => a.trim()).filter(a => a);
+return {
+sentence: config.querySelector(`#sentence_${index}`).value,
+emoji: config.querySelector(`#emoji_${index}`).value,
+image: questions[index].image,
+explanation: config.querySelector(`#explanation_${index}`).value,
+correctAnswers: correctAnswers.length > 0 ? correctAnswers : null
+};
+});
+// Guardar en el historial
+history.push(...questions);
+localStorage.setItem('history', JSON.stringify(history));
+localStorage.setItem('config', JSON.stringify({ questions }));
+showFeedback('¡Configuración guardada con éxito!');
+setTimeout(() => {
+window.location.href = 'game.html';
+}, 2000);
+}
+function loadHistory() {
+const historyContainer = document.getElementById('historyContainer');
+historyContainer.innerHTML = '';
+history.forEach((question, index) => {
+const historyItem = document.createElement('div');
+historyItem.className = 'history-item';
+historyItem.innerHTML = `
+<h3>Pregunta ${index + 1}</h3>
+<p><strong>Oración:</strong> ${question.sentence}</p>
+<p><strong>Emoji:</strong> ${question.emoji}</p>
+<p><strong>Explicación:</strong> ${question.explanation}</p>
+<p><strong>Respuestas correctas:</strong> ${question.correctAnswers ? question.correctAnswers.join(', ') : ''}</p>
+<div class="image-preview">
+${question.image ? `<img src="${question.image}" style="max-width: 100%; height: auto;">` : ''}
+</div>
+<button class="button edit" onclick="editFromHistory(${index})">Editar</button>
+`;
+historyContainer.appendChild(historyItem);
+});
+}
+function editFromHistory(index) {
+const question = history[index];
+questions.push(question);
+refreshQuestionsDisplay();
+showFeedback('Pregunta cargada para edición');
+}
+document.addEventListener('DOMContentLoaded', function() {
+const savedConfig = localStorage.getItem('config');
+if (savedConfig) {
+const config = JSON.parse(savedConfig);
+questions = config.questions || [];
+refreshQuestionsDisplay();
+}
+});
+</script>
 </body>
 </html>
