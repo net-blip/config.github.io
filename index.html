@@ -1,292 +1,504 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Configuración del Juego</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-background-color: #FFFFFF;
-color: #000000;
-margin: 0;
-padding: 0;
-}
-.container {
-width: 95%;
-max-width: 800px;
-margin: 0 auto;
-padding: 20px;
-background-color: #FCD307;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.header {
-text-align: center;
-color: #000000;
-}
-.config-area, .history-area {
-background-color: #FFFFFF;
-padding: 20px;
-border-radius: 10px;
-margin-top: 20px;
-}
-.button {
-background-color: #FCD307;
-color: #000000;
-border: none;
-padding: 10px 20px;
-margin: 5px;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s;
-width: 100%;
-box-sizing: border-box;
-}
-.button:hover {
-background-color: #FFBC00;
-}
-.button.delete {
-background-color: #FF6B6B;
-color: #FFFFFF;
-}
-.button.edit {
-background-color: #4CAF50;
-color: #FFFFFF;
-}
-input, select, textarea {
-width: 100%;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #000000;
-border-radius: 5px;
-box-sizing: border-box;
-}
-.question-config {
-border: 1px solid #ddd;
-padding: 15px;
-margin-bottom: 15px;
-border-radius: 5px;
-background-color: #f9f9f9;
-position: relative;
-transition: all 0.3s;
-}
-.question-actions {
-display: flex;
-justify-content: space-between;
-margin-top: 10px;
-}
-.emoji-preview {
-font-size: 24px;
-margin: 5px 0;
-min-height: 30px;
-}
-.sentence-preview {
-margin: 10px 0;
-padding: 10px;
-background-color: #f0f0f0;
-border-radius: 5px;
-min-height: 20px;
-}
-#configFeedback {
-text-align: center;
-margin-top: 20px;
-font-weight: bold;
-color: #4CAF50;
-height: 20px;
-}
-.history-item {
-border: 1px solid #ddd;
-padding: 10px;
-margin-bottom: 10px;
-border-radius: 5px;
-background-color: #f9f9f9;
-}
-@media (max-width: 480px) {
-.button {
-padding: 12px;
-}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración del Juego</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #E2E2E2;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            color: #000000;
+        }
+        .config-area {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #FCD307;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #FFBC00;
+        }
+        .button.delete {
+            background-color: #FF6B6B;
+            color: white;
+        }
+        .button.edit {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .button.cancel {
+            background-color: #9E9E9E;
+            color: white;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #000000;
+            border-radius: 5px;
+        }
+        .question-config {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .question-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .emoji-preview {
+            font-size: 24px;
+            margin: 5px 0;
+            min-height: 30px;
+        }
+        .sentence-preview {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            min-height: 20px;
+        }
+        #configFeedback {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            height: 20px;
+        }
+        .history-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: none;
+        }
+        .history-item {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #fff;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+        }
+        .history-item button {
+            background-color: #FF5722;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 3px 8px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .history-item button:hover {
+            background-color: #E64A19;
+        }
+        .image-preview {
+            margin: 10px 0;
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .history-edit-form {
+            background-color: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-<div class="header">
-<h1>Configuración del Juego</h1>
-</div>
-<div class="config-area">
-<h2>Configuración de Preguntas</h2>
-<div id="questionsContainer">
-<!-- Las preguntas se añadirán aquí -->
-</div>
-<button class="button" onclick="addQuestion()">Añadir Otra Pregunta</button>
-<button class="button" onclick="clearAllQuestions()">Limpiar Todas las Preguntas</button>
-<button class="button" onclick="saveConfig()">Guardar Configuración</button>
-<button class="button" onclick="window.location.href='game.html'">Ir al Juego</button>
-<p id="configFeedback"></p>
-</div>
-<div class="history-area">
-<h2>Historial de Preguntas</h2>
-<div id="historyContainer">
-<!-- El historial de preguntas se mostrará aquí -->
-</div>
-<button class="button" onclick="loadHistory()">Cargar Historial</button>
-</div>
-</div>
-<script>
-let questions = [];
-let editingIndex = null;
-let history = JSON.parse(localStorage.getItem('history')) || [];
-function addQuestion(question = { sentence: '', emoji: '', explanation: '', correctAnswers: [], image: '' }, isNew = true) {
-const container = document.getElementById('questionsContainer');
-const questionId = isNew ? questions.length : editingIndex;
-if (isNew) {
-questions.push(question);
-} else {
-questions[editingIndex] = question;
-editingIndex = null;
-}
-const questionDiv = document.createElement('div');
-questionDiv.className = 'question-config';
-questionDiv.id = `question-${questionId}`;
-questionDiv.innerHTML = `
-<h3>Pregunta ${questionId + 1}</h3>
-<div class="emoji-preview" id="emojiPreview_${questionId}">${question.emoji}</div>
-<div class="sentence-preview" id="sentencePreview_${questionId}">${question.sentence}</div>
-<div class="image-preview" id="imagePreview_${questionId}">
-${question.image ? `<img src="${question.image}" style="max-width: 100%; height: auto;">` : ''}
-</div>
-<label for="sentence_${questionId}">Oración:</label>
-<input type="text" id="sentence_${questionId}" value="${question.sentence}" placeholder="Ingrese la oración" oninput="updatePreview(${questionId}, 'sentence')">
-<label for="emoji_${questionId}">Emoji:</label>
-<input type="text" id="emoji_${questionId}" value="${question.emoji}" placeholder="Ingrese el emoji" oninput="updatePreview(${questionId}, 'emoji')">
-<label for="image_${questionId}">Imagen:</label>
-<input type="file" id="image_${questionId}" onchange="updateImagePreview(${questionId})">
-<label for="explanation_${questionId}">Explicación:</label>
-<textarea id="explanation_${questionId}" placeholder="Ingrese la explicación">${question.explanation}</textarea>
-<label for="correctAnswers_${questionId}">Respuestas correctas (separadas por comas):</label>
-<input type="text" id="correctAnswers_${questionId}" value="${question.correctAnswers ? question.correctAnswers.join(', ') : ''}" placeholder="Ej: respuesta1, respuesta2, otra respuesta">
-<div class="question-actions">
-<button class="button edit" onclick="editQuestion(${questionId})">Editar</button>
-<button class="button delete" onclick="deleteQuestion(${questionId})">Eliminar</button>
-</div>
-`;
-if (isNew) {
-container.appendChild(questionDiv);
-} else {
-const existingQuestion = document.getElementById(`question-${questionId}`);
-container.replaceChild(questionDiv, existingQuestion);
-}
-}
-function updatePreview(id, type) {
-const value = document.getElementById(`${type}_${id}`).value;
-document.getElementById(`${type}Preview_${id}`).innerHTML = type === 'emoji' ? value : value;
-}
-function updateImagePreview(id) {
-const fileInput = document.getElementById(`image_${id}`);
-const previewDiv = document.getElementById(`imagePreview_${id}`);
-const file = fileInput.files[0];
-if (file) {
-const reader = new FileReader();
-reader.onload = function(e) {
-previewDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; height: auto;">`;
-questions[id].image = e.target.result;
-}
-reader.readAsDataURL(file);
-}
-}
-function editQuestion(index) {
-const question = questions[index];
-editingIndex = index;
-const questionDiv = document.getElementById(`question-${index}`);
-questionDiv.remove();
-addQuestion(question, false);
-}
-function deleteQuestion(index) {
-if (confirm('¿Estás seguro de que quieres eliminar esta pregunta?')) {
-questions.splice(index, 1);
-refreshQuestionsDisplay();
-showFeedback('Pregunta eliminada correctamente');
-}
-}
-function clearAllQuestions() {
-if (confirm('¿Estás seguro de que quieres eliminar todas las preguntas?')) {
-questions = [];
-refreshQuestionsDisplay();
-showFeedback('Todas las preguntas han sido eliminadas');
-}
-}
-function refreshQuestionsDisplay() {
-const container = document.getElementById('questionsContainer');
-container.innerHTML = '';
-questions.forEach((question, index) => {
-addQuestion(question, false);
-});
-}
-function showFeedback(message) {
-const feedback = document.getElementById('configFeedback');
-feedback.textContent = message;
-setTimeout(() => {
-feedback.textContent = '';
-}, 3000);
-}
-function saveConfig() {
-const questionsContainer = document.getElementById('questionsContainer');
-const questionConfigs = questionsContainer.querySelectorAll('.question-config');
-questions = Array.from(questionConfigs).map((config, index) => {
-const correctAnswersInput = config.querySelector(`#correctAnswers_${index}`).value;
-const correctAnswers = correctAnswersInput.split(',').map(a => a.trim()).filter(a => a);
-return {
-sentence: config.querySelector(`#sentence_${index}`).value,
-emoji: config.querySelector(`#emoji_${index}`).value,
-image: questions[index].image,
-explanation: config.querySelector(`#explanation_${index}`).value,
-correctAnswers: correctAnswers.length > 0 ? correctAnswers : null
-};
-});
-// Guardar en el historial
-history.push(...questions);
-localStorage.setItem('history', JSON.stringify(history));
-localStorage.setItem('config', JSON.stringify({ questions }));
-showFeedback('¡Configuración guardada con éxito!');
-setTimeout(() => {
-window.location.href = 'game.html';
-}, 2000);
-}
-function loadHistory() {
-const historyContainer = document.getElementById('historyContainer');
-historyContainer.innerHTML = '';
-history.forEach((question, index) => {
-const historyItem = document.createElement('div');
-historyItem.className = 'history-item';
-historyItem.innerHTML = `
-<h3>Pregunta ${index + 1}</h3>
-<p><strong>Oración:</strong> ${question.sentence}</p>
-<p><strong>Emoji:</strong> ${question.emoji}</p>
-<p><strong>Explicación:</strong> ${question.explanation}</p>
-<p><strong>Respuestas correctas:</strong> ${question.correctAnswers ? question.correctAnswers.join(', ') : ''}</p>
-<div class="image-preview">
-${question.image ? `<img src="${question.image}" style="max-width: 100%; height: auto;">` : ''}
-</div>
-<button class="button edit" onclick="editFromHistory(${index})">Editar</button>
-`;
-historyContainer.appendChild(historyItem);
-});
-}
-function editFromHistory(index) {
-const question = history[index];
-questions.push(question);
-refreshQuestionsDisplay();
-showFeedback('Pregunta cargada para edición');
-}
-document.addEventListener('DOMContentLoaded', function() {
-const savedConfig = localStorage.getItem('config');
-if (savedConfig) {
-const config = JSON.parse(savedConfig);
-questions = config.questions || [];
-refreshQuestionsDisplay();
-}
-});
-</script>
+    <div class="container">
+        <div class="header">
+            <h1>Configuración del Juego</h1>
+        </div>
+        <div class="config-area">
+            <h2>Configuración de Preguntas</h2>
+            <div id="questionsContainer">
+                <!-- Las preguntas se añadirán aquí -->
+            </div>
+            <button class="button" onclick="addQuestion()">Añadir Otra Pregunta</button>
+            <button class="button" onclick="clearAllQuestions()">Limpiar Todas las Preguntas</button>
+            <button class="button" onclick="saveConfig()">Guardar Configuración</button>
+            <button class="button" onclick="window.location.href='game.html'">Ir al Juego</button>
+            <button class="button" onclick="toggleHistory()">Mostrar Historial</button>
+            <div class="history-container" id="historyContainer">
+                <h2>Historial de Preguntas</h2>
+                <div id="historyList"></div>
+            </div>
+            <p id="configFeedback"></p>
+        </div>
+    </div>
+    <script>
+        let questions = [];
+        let editingIndex = null;
+        let history = JSON.parse(localStorage.getItem('history')) || [];
+        let editingHistoryIndex = null;
+
+        function addQuestion(question = { sentence: '', emoji: '', explanation: '', correctAnswers: [], image: '' }, isNew = true) {
+            const container = document.getElementById('questionsContainer');
+            const questionId = isNew ? questions.length : editingIndex;
+
+            if (isNew) {
+                questions.push(question);
+            } else {
+                questions[editingIndex] = question;
+                editingIndex = null;
+            }
+
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-config';
+            questionDiv.id = `question-${questionId}`;
+            questionDiv.innerHTML = `
+                <h3>Pregunta ${questionId + 1}</h3>
+                <div class="emoji-preview" id="emojiPreview_${questionId}">${question.emoji}</div>
+                <div class="sentence-preview" id="sentencePreview_${questionId}">${question.sentence}</div>
+                ${question.image ? `<img src="${question.image}" class="image-preview" alt="Preview" id="imagePreview_${questionId}">` : ''}
+
+                <label for="sentence_${questionId}">Oración:</label>
+                <input type="text" id="sentence_${questionId}" value="${question.sentence}" placeholder="Ingrese la oración" oninput="updatePreview(${questionId}, 'sentence')">
+
+                <label for="emoji_${questionId}">Emoji:</label>
+                <input type="text" id="emoji_${questionId}" value="${question.emoji}" placeholder="Ingrese el emoji" oninput="updatePreview(${questionId}, 'emoji')">
+
+                <label for="image_${questionId}">Imagen:</label>
+                <input type="file" id="image_${questionId}" accept="image/*" onchange="updateImagePreview(${questionId})">
+
+                <label for="explanation_${questionId}">Explicación:</label>
+                <textarea id="explanation_${questionId}" placeholder="Ingrese la explicación">${question.explanation}</textarea>
+
+                <label for="correctAnswers_${questionId}">Respuestas correctas (separadas por comas):</label>
+                <input type="text" id="correctAnswers_${questionId}" value="${question.correctAnswers ? question.correctAnswers.join(', ') : ''}" placeholder="Ej: respuesta1, respuesta2, otra respuesta">
+
+                <div class="question-actions">
+                    <button class="button edit" onclick="saveEditedQuestion(${questionId})">Guardar</button>
+                    <button class="button delete" onclick="deleteQuestion(${questionId})">Eliminar</button>
+                </div>
+            `;
+
+            if (isNew) {
+                container.appendChild(questionDiv);
+            } else {
+                const existingQuestion = document.getElementById(`question-${questionId}`);
+                if (existingQuestion) {
+                    container.replaceChild(questionDiv, existingQuestion);
+                }
+            }
+        }
+
+        function updatePreview(id, type) {
+            const value = document.getElementById(`${type}_${id}`).value;
+            document.getElementById(`${type}Preview_${id}`).innerHTML = value;
+        }
+
+        function updateImagePreview(id) {
+            const fileInput = document.getElementById(`image_${id}`);
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let imagePreview = document.getElementById(`imagePreview_${id}`);
+                    if (!imagePreview) {
+                        imagePreview = document.createElement('img');
+                        imagePreview.id = `imagePreview_${id}`;
+                        imagePreview.className = 'image-preview';
+                        document.getElementById(`question-${id}`).insertBefore(imagePreview, document.getElementById(`sentence_${id}`).nextSibling);
+                    }
+                    imagePreview.src = e.target.result;
+                    questions[id].image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function editQuestion(index) {
+            const question = questions[index];
+            editingIndex = index;
+
+            const questionDiv = document.getElementById(`question-${index}`);
+            if (questionDiv) {
+                questionDiv.remove();
+            }
+
+            addQuestion(question, false);
+        }
+
+        function saveEditedQuestion(index) {
+            const question = {
+                sentence: document.getElementById(`sentence_${index}`).value,
+                emoji: document.getElementById(`emoji_${index}`).value,
+                image: questions[index].image || '',
+                explanation: document.getElementById(`explanation_${index}`).value,
+                correctAnswers: document.getElementById(`correctAnswers_${index}`).value.split(',').map(a => a.trim()).filter(a => a)
+            };
+
+            questions[index] = question;
+            updateHistoryFromQuestions();
+            showFeedback('Pregunta guardada correctamente');
+        }
+
+        function updateHistoryFromQuestions() {
+            // Actualizar el historial con las preguntas actuales
+            history = [...questions];
+            localStorage.setItem('history', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+
+        function deleteQuestion(index) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta pregunta?')) {
+                questions.splice(index, 1);
+                updateHistoryFromQuestions();
+                refreshQuestionsDisplay();
+                showFeedback('Pregunta eliminada correctamente');
+            }
+        }
+
+        function clearAllQuestions() {
+            if (confirm('¿Estás seguro de que quieres eliminar todas las preguntas?')) {
+                questions = [];
+                history = [];
+                localStorage.removeItem('config');
+                localStorage.removeItem('history');
+                refreshQuestionsDisplay();
+                updateHistoryDisplay();
+                showFeedback('Todas las preguntas han sido eliminadas');
+            }
+        }
+
+        function refreshQuestionsDisplay() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                addQuestion(question, false);
+            });
+        }
+
+        function showFeedback(message) {
+            const feedback = document.getElementById('configFeedback');
+            feedback.textContent = message;
+            setTimeout(() => {
+                feedback.textContent = '';
+            }, 3000);
+        }
+
+        function toggleHistory() {
+            const historyContainer = document.getElementById('historyContainer');
+            if (historyContainer.style.display === 'none' || !historyContainer.style.display) {
+                historyContainer.style.display = 'block';
+                updateHistoryDisplay();
+            } else {
+                historyContainer.style.display = 'none';
+            }
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            history.forEach((item, index) => {
+                // Si estamos editando este ítem, no lo mostramos en la lista normal
+                if (editingHistoryIndex === index) return;
+                
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.id = `history-item-${index}`;
+                historyItem.innerHTML = `
+                    <span><strong>Oración:</strong> ${item.sentence}</span>
+                    <span><strong>Emoji:</strong> ${item.emoji}</span>
+                    ${item.image ? `<img src="${item.image}" class="image-preview" alt="Preview" style="max-width: 100px;">` : ''}
+                    <span><strong>Explicación:</strong> ${item.explanation}</span>
+                    <span><strong>Respuestas correctas:</strong> ${item.correctAnswers ? item.correctAnswers.join(', ') : ''}</span>
+                    <div class="question-actions">
+                        <button class="button edit" onclick="editHistoryItem(${index})">Editar</button>
+                        <button class="button delete" onclick="deleteHistoryItem(${index})">Eliminar</button>
+                    </div>
+                `;
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        function editHistoryItem(index) {
+            editingHistoryIndex = index;
+            const question = history[index];
+            
+            const historyList = document.getElementById('historyList');
+            const editForm = document.createElement('div');
+            editForm.className = 'history-edit-form';
+            editForm.id = `history-edit-form-${index}`;
+            editForm.innerHTML = `
+                <h3>Editando Pregunta del Historial</h3>
+                <div class="emoji-preview" id="historyEmojiPreview_${index}">${question.emoji}</div>
+                <div class="sentence-preview" id="historySentencePreview_${index}">${question.sentence}</div>
+                ${question.image ? `<img src="${question.image}" class="image-preview" alt="Preview" id="historyImagePreview_${index}">` : ''}
+
+                <label for="historySentence_${index}">Oración:</label>
+                <input type="text" id="historySentence_${index}" value="${question.sentence}" placeholder="Ingrese la oración" oninput="updateHistoryPreview(${index}, 'sentence')">
+
+                <label for="historyEmoji_${index}">Emoji:</label>
+                <input type="text" id="historyEmoji_${index}" value="${question.emoji}" placeholder="Ingrese el emoji" oninput="updateHistoryPreview(${index}, 'emoji')">
+
+                <label for="historyImage_${index}">Imagen:</label>
+                <input type="file" id="historyImage_${index}" accept="image/*" onchange="updateHistoryImagePreview(${index})">
+
+                <label for="historyExplanation_${index}">Explicación:</label>
+                <textarea id="historyExplanation_${index}" placeholder="Ingrese la explicación">${question.explanation}</textarea>
+
+                <label for="historyCorrectAnswers_${index}">Respuestas correctas (separadas por comas):</label>
+                <input type="text" id="historyCorrectAnswers_${index}" value="${question.correctAnswers ? question.correctAnswers.join(', ') : ''}" placeholder="Ej: respuesta1, respuesta2, otra respuesta">
+
+                <div class="question-actions">
+                    <button class="button edit" onclick="saveHistoryEdit(${index})">Guardar Cambios</button>
+                    <button class="button cancel" onclick="cancelHistoryEdit(${index})">Cancelar</button>
+                </div>
+            `;
+            
+            historyList.appendChild(editForm);
+        }
+
+        function updateHistoryPreview(id, type) {
+            const value = document.getElementById(`history${type.charAt(0).toUpperCase() + type.slice(1)}_${id}`).value;
+            document.getElementById(`history${type.charAt(0).toUpperCase() + type.slice(1)}Preview_${id}`).innerHTML = value;
+        }
+
+        function updateHistoryImagePreview(id) {
+            const fileInput = document.getElementById(`historyImage_${id}`);
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let imagePreview = document.getElementById(`historyImagePreview_${id}`);
+                    if (!imagePreview) {
+                        imagePreview = document.createElement('img');
+                        imagePreview.id = `historyImagePreview_${id}`;
+                        imagePreview.className = 'image-preview';
+                        const editForm = document.getElementById(`history-edit-form-${id}`);
+                        const sentencePreview = document.getElementById(`historySentencePreview_${id}`);
+                        editForm.insertBefore(imagePreview, sentencePreview.nextSibling);
+                    }
+                    imagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveHistoryEdit(index) {
+            const question = {
+                sentence: document.getElementById(`historySentence_${index}`).value,
+                emoji: document.getElementById(`historyEmoji_${index}`).value,
+                image: document.getElementById(`historyImagePreview_${index}`)?.src || history[index].image || '',
+                explanation: document.getElementById(`historyExplanation_${index}`).value,
+                correctAnswers: document.getElementById(`historyCorrectAnswers_${index}`).value.split(',').map(a => a.trim()).filter(a => a)
+            };
+
+            // Actualizar en el historial
+            history[index] = question;
+            localStorage.setItem('history', JSON.stringify(history));
+            
+            // Actualizar también en las preguntas activas si existe
+            const questionIndex = questions.findIndex(q => 
+                q.sentence === history[index].sentence && 
+                q.emoji === history[index].emoji
+            );
+            if (questionIndex !== -1) {
+                questions[questionIndex] = {...question};
+            }
+            
+            // Finalizar edición
+            cancelHistoryEdit(index);
+            showFeedback('Cambios guardados en el historial');
+        }
+
+        function cancelHistoryEdit(index) {
+            editingHistoryIndex = null;
+            const editForm = document.getElementById(`history-edit-form-${index}`);
+            if (editForm) {
+                editForm.remove();
+            }
+            updateHistoryDisplay();
+        }
+
+        function deleteHistoryItem(index) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta pregunta del historial?')) {
+                history.splice(index, 1);
+                localStorage.setItem('history', JSON.stringify(history));
+                
+                // Si estamos editando este ítem, cancelar la edición
+                if (editingHistoryIndex === index) {
+                    cancelHistoryEdit(index);
+                }
+                
+                updateHistoryDisplay();
+                showFeedback('Pregunta eliminada del historial');
+            }
+        }
+
+        function saveConfig() {
+            const questionsContainer = document.getElementById('questionsContainer');
+            const questionConfigs = questionsContainer.querySelectorAll('.question-config');
+            
+            questions = Array.from(questionConfigs).map((config, index) => {
+                const correctAnswersInput = config.querySelector(`#correctAnswers_${index}`).value;
+                const correctAnswers = correctAnswersInput.split(',').map(a => a.trim()).filter(a => a);
+
+                return {
+                    sentence: config.querySelector(`#sentence_${index}`).value,
+                    emoji: config.querySelector(`#emoji_${index}`).value,
+                    image: questions[index].image || '',
+                    explanation: config.querySelector(`#explanation_${index}`).value,
+                    correctAnswers: correctAnswers.length > 0 ? correctAnswers : null
+                };
+            });
+
+            updateHistoryFromQuestions();
+            localStorage.setItem('config', JSON.stringify({ questions }));
+            showFeedback('¡Configuración guardada con éxito!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedConfig = localStorage.getItem('config');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                questions = config.questions || [];
+                refreshQuestionsDisplay();
+            }
+            
+            // Cargar historial si existe
+            const savedHistory = localStorage.getItem('history');
+            if (savedHistory) {
+                history = JSON.parse(savedHistory);
+            }
+        });
+    </script>
 </body>
 </html>
