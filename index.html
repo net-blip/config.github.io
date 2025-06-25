@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuración del Juego</title>
     <style>
+        /* Tus estilos CSS permanecen igual */
         body {
             font-family: Arial, sans-serif;
             background-color: #FFFFFF;
@@ -148,7 +149,8 @@
                 <!-- Las preguntas se añadirán aquí -->
             </div>
             <button class="button" onclick="addQuestion()">Añadir Otra Pregunta</button>
-            <button class="button" onclick="clearAllQuestions()">Limpiar Todas las Preguntas</button>
+            <button class="button" onclick="clearCurrentQuestions()">Limpiar Preguntas Actuales</button>
+            <button class="button" onclick="clearAllQuestions()">Limpiar Todo el Historial</button>
             <button class="button" onclick="saveConfig()">Guardar Configuración</button>
             <button class="button" onclick="window.location.href='game.html'">Ir al Juego</button>
             <button class="button" onclick="toggleHistory()">Mostrar Historial</button>
@@ -167,12 +169,15 @@
 
         function addQuestion(question = { sentence: '', emoji: '', explanation: '', correctAnswers: [], image: '' }, isNew = true) {
             const container = document.getElementById('questionsContainer');
-            const questionId = isNew ? questions.length : editingIndex;
+            const questionId = isNew ? Date.now() : editingIndex;
 
             if (isNew) {
-                questions.push(question);
+                questions.push({...question, id: questionId});
             } else {
-                questions[editingIndex] = question;
+                const index = questions.findIndex(q => q.id === questionId);
+                if (index !== -1) {
+                    questions[index] = {...question, id: questionId};
+                }
                 editingIndex = null;
             }
 
@@ -180,7 +185,7 @@
             questionDiv.className = 'question-config';
             questionDiv.id = `question-${questionId}`;
             questionDiv.innerHTML = `
-                <h3>Pregunta ${questionId + 1}</h3>
+                <h3>Pregunta ${questions.length}</h3>
                 <div class="emoji-preview" id="emojiPreview_${questionId}">${question.emoji}</div>
                 <div class="sentence-preview" id="sentencePreview_${questionId}">${question.sentence}</div>
                 ${question.image ? `<img src="${question.image}" class="image-preview" alt="Preview" id="imagePreview_${questionId}">` : ''}
@@ -235,17 +240,25 @@
                         document.getElementById(`question-${id}`).insertBefore(imagePreview, document.getElementById(`sentence_${id}`).nextSibling);
                     }
                     imagePreview.src = e.target.result;
-                    questions[id].image = e.target.result;
+                    
+                    // Actualizar la pregunta correspondiente
+                    const questionIndex = questions.findIndex(q => q.id === id);
+                    if (questionIndex !== -1) {
+                        questions[questionIndex].image = e.target.result;
+                    }
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function editQuestion(index) {
-            const question = questions[index];
-            editingIndex = index;
+        function editQuestion(id) {
+            const questionIndex = questions.findIndex(q => q.id === id);
+            if (questionIndex === -1) return;
 
-            const questionDiv = document.getElementById(`question-${index}`);
+            const question = questions[questionIndex];
+            editingIndex = id;
+
+            const questionDiv = document.getElementById(`question-${id}`);
             if (questionDiv) {
                 questionDiv.remove();
             }
@@ -253,38 +266,56 @@
             addQuestion(question, false);
         }
 
-        function saveEditedQuestion(index) {
+        function saveEditedQuestion(id) {
+            const questionIndex = questions.findIndex(q => q.id === id);
+            if (questionIndex === -1) return;
+
             const question = {
-                sentence: document.getElementById(`sentence_${index}`).value,
-                emoji: document.getElementById(`emoji_${index}`).value,
-                image: questions[index].image || '',
-                explanation: document.getElementById(`explanation_${index}`).value,
-                correctAnswers: document.getElementById(`correctAnswers_${index}`).value.split(',').map(a => a.trim()).filter(a => a)
+                id: id,
+                sentence: document.getElementById(`sentence_${id}`).value,
+                emoji: document.getElementById(`emoji_${id}`).value,
+                image: questions[questionIndex].image || '',
+                explanation: document.getElementById(`explanation_${id}`).value,
+                correctAnswers: document.getElementById(`correctAnswers_${id}`).value.split(',').map(a => a.trim()).filter(a => a)
             };
 
-            questions[index] = question;
+            questions[questionIndex] = question;
             updateHistoryFromQuestions();
             showFeedback('Pregunta guardada correctamente');
         }
 
         function updateHistoryFromQuestions() {
-            // Actualizar el historial con las preguntas actuales
-            history = [...questions];
+            // Actualizar el historial con todas las preguntas únicas
+            const allQuestions = [...questions];
+            history.forEach(item => {
+                if (!allQuestions.some(q => q.id === item.id)) {
+                    allQuestions.push(item);
+                }
+            });
+            history = allQuestions;
             localStorage.setItem('history', JSON.stringify(history));
             updateHistoryDisplay();
         }
 
-        function deleteQuestion(index) {
+        function deleteQuestion(id) {
             if (confirm('¿Estás seguro de que quieres eliminar esta pregunta?')) {
-                questions.splice(index, 1);
+                questions = questions.filter(q => q.id !== id);
                 updateHistoryFromQuestions();
                 refreshQuestionsDisplay();
                 showFeedback('Pregunta eliminada correctamente');
             }
         }
 
+        function clearCurrentQuestions() {
+            if (confirm('¿Estás seguro de que quieres limpiar las preguntas actuales?')) {
+                questions = [];
+                refreshQuestionsDisplay();
+                showFeedback('Preguntas actuales eliminadas');
+            }
+        }
+
         function clearAllQuestions() {
-            if (confirm('¿Estás seguro de que quieres eliminar todas las preguntas?')) {
+            if (confirm('¿Estás seguro de que quieres eliminar TODAS las preguntas (incluyendo el historial)?')) {
                 questions = [];
                 history = [];
                 localStorage.removeItem('config');
@@ -299,7 +330,7 @@
             const container = document.getElementById('questionsContainer');
             container.innerHTML = '';
 
-            questions.forEach((question, index) => {
+            questions.forEach((question) => {
                 addQuestion(question, false);
             });
         }
@@ -327,7 +358,6 @@
             historyList.innerHTML = '';
             
             history.forEach((item, index) => {
-                // Si estamos editando este ítem, no lo mostramos en la lista normal
                 if (editingHistoryIndex === index) return;
                 
                 const historyItem = document.createElement('div');
@@ -342,10 +372,24 @@
                     <div class="question-actions">
                         <button class="button edit" onclick="editHistoryItem(${index})">Editar</button>
                         <button class="button delete" onclick="deleteHistoryItem(${index})">Eliminar</button>
+                        <button class="button" onclick="addToCurrentQuestions(${index})">Añadir a preguntas actuales</button>
                     </div>
                 `;
                 historyList.appendChild(historyItem);
             });
+        }
+
+        function addToCurrentQuestions(index) {
+            if (index >= 0 && index < history.length) {
+                const question = history[index];
+                if (!questions.some(q => q.id === question.id)) {
+                    questions.push({...question});
+                    addQuestion(question, false);
+                    showFeedback('Pregunta añadida a las preguntas actuales');
+                } else {
+                    showFeedback('Esta pregunta ya está en las preguntas actuales');
+                }
+            }
         }
 
         function editHistoryItem(index) {
@@ -407,6 +451,9 @@
                         editForm.insertBefore(imagePreview, sentencePreview.nextSibling);
                     }
                     imagePreview.src = e.target.result;
+                    
+                    // Actualizar la imagen en el historial temporalmente
+                    history[id].image = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -414,6 +461,7 @@
 
         function saveHistoryEdit(index) {
             const question = {
+                id: history[index].id,
                 sentence: document.getElementById(`historySentence_${index}`).value,
                 emoji: document.getElementById(`historyEmoji_${index}`).value,
                 image: document.getElementById(`historyImagePreview_${index}`)?.src || history[index].image || '',
@@ -426,10 +474,7 @@
             localStorage.setItem('history', JSON.stringify(history));
             
             // Actualizar también en las preguntas activas si existe
-            const questionIndex = questions.findIndex(q => 
-                q.sentence === history[index].sentence && 
-                q.emoji === history[index].emoji
-            );
+            const questionIndex = questions.findIndex(q => q.id === question.id);
             if (questionIndex !== -1) {
                 questions[questionIndex] = {...question};
             }
@@ -450,15 +495,18 @@
 
         function deleteHistoryItem(index) {
             if (confirm('¿Estás seguro de que quieres eliminar esta pregunta del historial?')) {
+                const questionId = history[index].id;
+                questions = questions.filter(q => q.id !== questionId);
+                
                 history.splice(index, 1);
                 localStorage.setItem('history', JSON.stringify(history));
                 
-                // Si estamos editando este ítem, cancelar la edición
                 if (editingHistoryIndex === index) {
                     cancelHistoryEdit(index);
                 }
                 
                 updateHistoryDisplay();
+                refreshQuestionsDisplay();
                 showFeedback('Pregunta eliminada del historial');
             }
         }
@@ -467,15 +515,19 @@
             const questionsContainer = document.getElementById('questionsContainer');
             const questionConfigs = questionsContainer.querySelectorAll('.question-config');
             
-            questions = Array.from(questionConfigs).map((config, index) => {
-                const correctAnswersInput = config.querySelector(`#correctAnswers_${index}`).value;
+            questions = Array.from(questionConfigs).map(config => {
+                const id = parseInt(config.id.replace('question-', ''));
+                const correctAnswersInput = config.querySelector(`#correctAnswers_${id}`).value;
                 const correctAnswers = correctAnswersInput.split(',').map(a => a.trim()).filter(a => a);
 
+                const existingQuestion = questions.find(q => q.id === id) || {};
+                
                 return {
-                    sentence: config.querySelector(`#sentence_${index}`).value,
-                    emoji: config.querySelector(`#emoji_${index}`).value,
-                    image: questions[index].image || '',
-                    explanation: config.querySelector(`#explanation_${index}`).value,
+                    id: id,
+                    sentence: config.querySelector(`#sentence_${id}`).value,
+                    emoji: config.querySelector(`#emoji_${id}`).value,
+                    image: existingQuestion.image || '',
+                    explanation: config.querySelector(`#explanation_${id}`).value,
                     correctAnswers: correctAnswers.length > 0 ? correctAnswers : null
                 };
             });
@@ -493,10 +545,19 @@
                 refreshQuestionsDisplay();
             }
             
-            // Cargar historial si existe
             const savedHistory = localStorage.getItem('history');
             if (savedHistory) {
                 history = JSON.parse(savedHistory);
+                
+                // Asegurarse de que las imágenes se mantengan al cargar
+                history.forEach(item => {
+                    if (item.image && item.image.startsWith('data:image')) {
+                        // La imagen ya está en formato data URL, no hacer nada
+                    } else if (item.image) {
+                        // Si la imagen no es una data URL, podrías querer eliminarla o manejarla de otra forma
+                        item.image = '';
+                    }
+                });
             }
         });
     </script>
